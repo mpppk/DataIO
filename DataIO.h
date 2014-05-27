@@ -21,7 +21,7 @@ using namespace std;
 
 namespace mc{
 	/**
-	 * @class DataIO a b csvの入出力をするクラス
+	 * @class DataIO a b ファイルの入出力及び変更をを行うクラス
 	 * @remarks 
 	 */
 	class DataIO{
@@ -48,25 +48,25 @@ namespace mc{
 			WriteOptionNum
 		};
 
-		/** CSVファイルをマージする際のオプション */
+		/** Dataをマージする際のオプション */
 		enum mergeOption {
-			/** マージする二つのCSVファイルの間にスペースを入れる */
+			/** マージする二つのDataの間にスペースを入れる */
 			WITH_SPACE,
-			/** マージする二つのCSVファイルの間にスペースを入れない */
+			/** マージする二つのDataの間にスペースを入れない */
 			NO_SPACE
 		};
 
 		DataIO();
 
 		/**
-		 * stringひとつをCSVのひとつの要素として読み込む
-		 * @param[in] contents 読み込むデータ
+		 * stringひとつをDataのひとつの要素として読み込む
+		 * @param[in] contents 読み込むData
 		 */
 		DataIO(const vector< vector<string> > contents);
 
 		/**
-		 * 指定されたパスのCSVファイルを読み込む
-		 * @param[in] tempfilePass 読み込むCSVファイルのパス
+		 * 指定されたパスのDataファイルを読み込む
+		 * @param[in] tempfilePass 読み込むDataファイルのパス
 		 */
 		DataIO(const string tempfilePass);
 
@@ -80,53 +80,54 @@ namespace mc{
 
 		/**
 		 * 受け取った文字列集合を保持する
-		 * @param[in] contents 読み込むデータ
+		 * @param[in] contents 読み込むData
 		 */
-		void createByVec(const vector< vector<string> > contents);
+		DataIO& create(const vector< vector<string> > contents);
 
 		/**
-		 * csvの内容を保持するvectorを返す
+		 * Dataの内容を保持するvectorを返す
 		 */
-		vector< vector<string> > getCsvContents();
+		vector< vector<string> > toVec();
 
 		/**
-		 * csvの内容を表示する
+		 * Dataの内容を表示する
 		 */
-		void showCsvContents();
-		static void showCsvContents(vector< vector<string> > contents);
+		DataIO& show();
+		static void show(vector< vector<string> > contents);
 		/**
-		 * 指定したパスのcsvファイルを読み込む
-		 * @param readFilePass 読み込むcsvファイルのパス
+		 * 指定したパスのDataファイルを読み込む
+		 * @param readFilePass 読み込むDataファイルのパス
 		 */
-		void readCsvFile(const string readFilePass);
+		DataIO& readFile(const string readFilePass);
 
 		/**
-		 * csvの内容を指定したパスに書き込む
+		 * Dataの内容を指定したパスに書き込む
 		 * @param writeFilePass 書き込み先のパス
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		void writeCsvFile(const string writeFilePass, WriteOption wo = out);
+		DataIO& writeFile(const string writeFilePass, WriteOption wo = out);
 
 		/**
-		 * csvの内容を指定したパスに書き込む
+		 * Dataの内容を指定したパスに書き込む
 		 * @param writeFilePass 書き込み先のパス
 		 * @param contents 		書き込む内容
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		static void writeCsvFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo = out);
+		static void writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo = out);
 
 
 		template<class T>
 		 /**
-		  * csvの指定した要素を変更する
+		  * Dataの指定した要素を変更する
 		  * @param row   変更する要素の行
 		  * @param col   変更する要素の列
 		  * @param value 変更後の値
 		  */
-		void modCsvValue(const int row, const int col, const T value){
+		DataIO& modValue(const int row, const int col, const T value){
 			stringstream ss;
 			ss << value;
 			contents_[row][col] = ss.str();
+			return *this;
 		}
 
 		/**
@@ -134,27 +135,27 @@ namespace mc{
 		 * @param row         追加する行
 		 * @param rowContents 追加する内容
 		 */
-		void addRow(const unsigned int row, const vector<string> rowContents);
+		DataIO& addRow(const unsigned int row, const vector<string> rowContents);
 
 		/**
 		 * 最後に行を追加
 		 * @param rowContents 追加する内容
 		 */
-		void pushBack(const vector<string> rowContents);
+		DataIO& pushBack(const vector<string> rowContents);
 		/**
 		 * 最後に行を追加(1列目に)
 		 * @param paramName 1列目に書きこむ内容
 		 * @param param     2列目に書きこむ内容
 		 */
-		void pushBack(const string paramName, const double param);
+		DataIO& pushBack(const string paramName, const double param);
 		/**
 		 * 最後に行を追加(1列目に)
 		 * @param paramName 1列目に書きこむ内容
 		 * @param param     2列目に書きこむ内容
 		 */
-		void pushBack(const string paramName, const string param);
+		DataIO& pushBack(const string paramName, const string param);
 
-		void pushBack(const string element);
+		DataIO& pushBack(const string element);
 
 		/**
 		 * 与えられた値で列を追加
@@ -170,28 +171,28 @@ namespace mc{
 		 */
 		static vector< vector<string> > pushBackCol(const vector< vector<string> > contents, const string val);
 
-		void pushBackCol(const string val);
-		void pushBackCol(const double val);
+		DataIO& pushBackCol(const string val);
+		DataIO& pushBackCol(const double val);
 
 		/**
 		 * 保持しているコンテンツを消す
 		 */
-		void clear();
+		DataIO& clear();
 
 		/**
-		 * 横にcsvをマージする
-		 * @param contents1 csvの内容
-		 * @param contents2 右側に追加するcsvの内容
+		 * 横にDataをマージする
+		 * @param contents1 Dataの内容
+		 * @param contents2 右側に追加するDataの内容
 		 */
-		static vector< vector<string> > mergeCSVToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo = WITH_SPACE);
+		static vector< vector<string> > mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo = WITH_SPACE);
 		/**
-		 * 下にcsvをマージする
-		 * @param contents1 csvの内容
-		 * @param contents2 下に追加するcsvの内容
+		 * 下にDataをマージする
+		 * @param contents1 Dataの内容
+		 * @param contents2 下に追加するDataの内容
 		 */
-		static vector< vector<string> > mergeCSVToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo = WITH_SPACE);
+		static vector< vector<string> > mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo = WITH_SPACE);
 
-		static vector< vector<string> > mergeCSVToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo = WITH_SPACE);
+		static vector< vector<string> > mergeToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo = WITH_SPACE);
 
 		static vector< vector<string> > t(const vector< vector<string> > contents);
 		DataIO& t();

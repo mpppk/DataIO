@@ -1,5 +1,5 @@
 /**
- * Csvを簡単に扱うためのクラス
+ * Dataを簡単に扱うためのクラス
  *
  * ほにゃほにゃ
  */
@@ -15,26 +15,28 @@ namespace mc{
 
 	//コンストラクタ
 	DataIO::DataIO(vector< vector<string> > contents){
-		createByVec(contents);
+		create(contents);
 	}
 
 	//コンストラクタ
 	DataIO::DataIO(string inputFilePass){
-		DataIO::readCsvFile(inputFilePass);
+		DataIO::readFile(inputFilePass);
 	}
 
 	string& DataIO::operator()(const int row, const int col){
+		// contents_は直接触らない
 		return contents_[row][col];
 	}
 
 	// vector< vector<string> >から読み込み
-	void DataIO::createByVec(vector< vector<string> > contents){
+	DataIO& DataIO::create(vector< vector<string> > contents){
 		contents_ = contents;
+		return *this;
 	}
 
-	// 指定したパスのcsvファイルを読み込む
-	void DataIO::readCsvFile(string inputFilePass){
-		cout << "reading csv file (from " << inputFilePass << ")" << endl;
+	// 指定したパスのDataファイルを読み込む
+	DataIO& DataIO::readFile(string inputFilePass){
+		cout << "reading Data file (from " << inputFilePass << ")" << endl;
 		filePass_ = inputFilePass;
 		ifstream ifs(filePass_.c_str());
 
@@ -59,16 +61,17 @@ namespace mc{
 			//contentsにこの行をpush
 			contents_.push_back(row);
 		}
+		return *this;
 	}
 
-	// csvの内容を指定したパスに書き込む
-	void DataIO::writeCsvFile(string writeFilePass, WriteOption wo){
-		writeCsvFile(writeFilePass, contents_, wo);
-
+	// Dataの内容を指定したパスに書き込む
+	DataIO& DataIO::writeFile(string writeFilePass, WriteOption wo){
+		writeFile(writeFilePass, contents_, wo);
+		return *this;
 	}
 	
-	// csvの内容を指定したパスに書き込む
-	void DataIO::writeCsvFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo){
+	// Dataの内容を指定したパスに書き込む
+	void DataIO::writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo){
 		ofstream ofs;
 		if(wo == app){
 			ofs.open(writeFilePass.c_str(), ios::app);
@@ -83,7 +86,7 @@ namespace mc{
 
 			//列数がゼロの行を含む場合は警告
 			if(row.size() <= 0){
-				cerr << "warning: this csv file contains zero element row\n";
+				cerr << "warning: this Data file contains zero element row\n";
 				continue;
 			}
 
@@ -97,17 +100,18 @@ namespace mc{
 		// delete(ofs);
 	}
 
-	//　csvの内容を保持するvectorを返す
-	vector< vector<string> > DataIO::getCsvContents(){
+	//　Dataの内容を保持するvectorを返す
+	vector< vector<string> > DataIO::toVec(){
 		return contents_;
 	}
 
-	// csvの内容を表示する
-	void DataIO::showCsvContents(){
-		showCsvContents(contents_);
+	// Dataの内容を表示する
+	DataIO& DataIO::show(){
+		show(contents_);
+		return *this;
 	}
 
-	void DataIO::showCsvContents(vector< vector<string> > contents){
+	void DataIO::show(vector< vector<string> > contents){
 		vector<string> row;
 		for(int i = 0; i < contents.size(); i++){
 			row = contents[i];
@@ -119,7 +123,7 @@ namespace mc{
 	}
 
 	// 指定した場所に行を挿入
-	void DataIO::addRow(const unsigned int row, const vector<string> rowContents){
+	DataIO& DataIO::addRow(const unsigned int row, const vector<string> rowContents){
 		vector< vector<string> > ::iterator it = contents_.begin();
 
 		// 不正な行が指定された場合は例外を投げる	
@@ -134,7 +138,7 @@ namespace mc{
 		//最後の次の行が指定された場合は,pushBackを呼び出す
 		if(contents_.size() == row){
 			pushBack(rowContents);
-			return;
+			return *this;
 		}
 
 		// 目的の行までイテレータをずらす
@@ -142,41 +146,46 @@ namespace mc{
 
 		// 行を挿入
 		contents_.insert(it, rowContents);
+		return *this;
 	}
 
 	// 最後に行を追加
-	void DataIO::pushBack(const vector<string> rowContents){
+	DataIO& DataIO::pushBack(const vector<string> rowContents){
 		contents_.push_back(rowContents);
+		return *this;
 	}
 
-	void DataIO::pushBack(const string paramName, const double param){
-		if (0 < contents_.size() && contents_[0].size() <= 0 ){// csvファイルが1列以下の場合は例外
+	DataIO& DataIO::pushBack(const string paramName, const double param){
+		if (0 < contents_.size() && contents_[0].size() <= 0 ){// Dataファイルが1列以下の場合は例外
 			ostringstream os;
-			os << "csv colsNum is 1 or less. so you can't pushBack." << endl;
+			os << "Data colsNum is 1 or less. so you can't pushBack." << endl;
 			throw out_of_range(os.str());
 		}
 		vector<string> tempRowContent;
 		tempRowContent.push_back(paramName);
 		tempRowContent.push_back(boost::lexical_cast<string>(param));
 		contents_.push_back(tempRowContent);
+		return *this;
 	}
 
-	void DataIO::pushBack(const string paramName, const string param){
-		if (0 < contents_.size() && contents_[0].size() <= 0 ){// csvファイルが1列以下の場合は例外
+	DataIO& DataIO::pushBack(const string paramName, const string param){
+		if (0 < contents_.size() && contents_[0].size() <= 0 ){// Dataファイルが1列以下の場合は例外
 			ostringstream os;
-			os << "csv colsNum is 1 or less. so you can't pushBack." << endl;
+			os << "Data colsNum is 1 or less. so you can't pushBack." << endl;
 			throw out_of_range(os.str());
 		}
 		vector<string> tempRowContent;
 		tempRowContent.push_back(paramName);
 		tempRowContent.push_back(param);
 		contents_.push_back(tempRowContent);
+		return *this;
 	}
 
-	void DataIO::pushBack(const string element){
+	DataIO& DataIO::pushBack(const string element){
 		vector<string> tempContent;
 		tempContent.push_back(element);
 		contents_.push_back(tempContent);
+		return *this;
 	}
 
 	// valの値で列を追加
@@ -194,22 +203,25 @@ namespace mc{
 	}
 
 	// valの値で列を追加
-	void DataIO::pushBackCol(const string val){
+	DataIO& DataIO::pushBackCol(const string val){
 		contents_ = pushBackCol(contents_, val);
+		return *this;
 	}
 
 	// valの値で列を追加
-	void DataIO::pushBackCol(const double val){
+	DataIO& DataIO::pushBackCol(const double val){
 		contents_ = pushBackCol(contents_, val);
+		return *this;
 	}
 
 	// 保持しているコンテンツを消す
-	void DataIO::clear(){
+	DataIO& DataIO::clear(){
 		contents_.clear();
+		return *this;
 	}
 
-	// csvを横にマージする
-	vector< vector<string> > DataIO::mergeCSVToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
+	// Dataを横にマージする
+	vector< vector<string> > DataIO::mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
 		vector< vector< string > > newContents;
 		
 		// contents1の行ごとに処理を行う
@@ -226,7 +238,7 @@ namespace mc{
 				if(mo == WITH_SPACE)
 					contents1Row.push_back("");
 
-				// ２つめのcsvを繋げていく
+				// ２つめのDataを繋げていく
 				for (int contents2Col_i = 0; contents2Col_i < contents2Row.size(); ++contents2Col_i){
 					contents1Row.push_back(contents2Row.at(contents2Col_i));
 				}
@@ -245,7 +257,7 @@ namespace mc{
 			}
 			brankValues.push_back("");
 
-			// ２つめのcsvを繋げていく
+			// ２つめのDataを繋げていく
 			for (int contents2Col_i = 0; contents2Col_i < contents2Row.size(); ++contents2Col_i){
 				brankValues.push_back(contents2Row.at(contents2Col_i));
 			}
@@ -254,7 +266,7 @@ namespace mc{
 		return newContents;
 	}
 
-	vector< vector<string> > DataIO::mergeCSVToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
+	vector< vector<string> > DataIO::mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
 		vector< vector<string> > newContents = contents1;
 		// 間にスペースを入れる
 		if (mo == WITH_SPACE){
@@ -263,28 +275,28 @@ namespace mc{
 			newContents.push_back(v);
 		}
 		for (int contents2Row_i = 0; contents2Row_i < contents2.size(); ++contents2Row_i){
-			// cout << "dbg:mergeCSVToBottom contents2 row: " << contents2Row_i << endl;
+			// cout << "dbg:mergeToBottom contents2 row: " << contents2Row_i << endl;
 			newContents.push_back(contents2.at(contents2Row_i));
 		}
 		return newContents;
 	}
 
-	vector< vector<string> > DataIO::mergeCSVToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo){
+	vector< vector<string> > DataIO::mergeToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo){
 		// マージするコンテンツが0の場合はエラー
 		if(contents.size() < 1){
-			throw invalid_argument("(in Csv::IO::mergeCSVToBottom) contents num is zero");
+			throw invalid_argument("(in Data::IO::mergeToBottom) contents num is zero");
 		}
 		// マージするコンテンツが1の場合はwarningを出してそのまま返す
 		if(contents.size() == 1){
-			cerr << "(in DataIO::mergeCsvToBottom) contents num is only one" << endl;
+			cerr << "(in DataIO::mergeToBottom) contents num is only one" << endl;
 			return contents[0];
 		}
 
 		// マージして返す
 		vector< vector<string> > retContents;
-		retContents = mergeCSVToBottom(contents[0], contents[1], mo);
+		retContents = mergeToBottom(contents[0], contents[1], mo);
 
-		for(int i = 2; i < contents.size(); i++)	retContents = mergeCSVToBottom(retContents, contents[i], mo);
+		for(int i = 2; i < contents.size(); i++)	retContents = mergeToBottom(retContents, contents[i], mo);
 		return retContents;
 	}
 
