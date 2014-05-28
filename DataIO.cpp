@@ -101,9 +101,21 @@ namespace mc{
 		// delete(ofs);
 	}
 
-	//　Dataの内容を保持するvectorを返す
-	vector< vector<string> > DataIO::toVec(){
+	//　Dataの内容を１行をvector<string>として返す
+	vector< vector<string> > DataIO::toVecRows(){
 		return contents_;
+	}
+
+	//　Dataの内容を1列をvector<string>として返す
+	vector< vector<string> > DataIO::toVecCols(){
+		return t(contents_);
+	}
+
+	//　Dataの内容を保持するvectorを返す
+	vector< vector<string> > DataIO::toVec(const ToVecOption option){
+		if(option == Row)	return toVecRows();
+		else if(option == Col)	return toVecCols();
+		throw invalid_argument("in DataIO::toVec");
 	}
 
 	// Dataの内容を表示する
@@ -321,11 +333,6 @@ namespace mc{
 			retContents.push_back(content);
 		}
 		return retContents;
-	}
-
-	DataIO& DataIO::t(){
-		contents_ = t(contents_);
-		return *this;
 	}
 }
 

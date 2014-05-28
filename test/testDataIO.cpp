@@ -50,10 +50,10 @@ protected:
 	}
 };
 
-// toVecが正しく動くかのテスト
+// toVecRowsが正しく動くかのテスト
 TEST_F(DataIOTest, toVecTest){
 	mc::DataIO data(getTempMat());
-	vector< vector<string> > v = data.toVec();
+	vector< vector<string> > v = data.toVecRows();
 	// １行１列目は１のはず
 	EXPECT_EQ(1, toInt(v[0][0]));
 	// 3行3列目は9のはず
@@ -73,7 +73,7 @@ TEST_F(DataIOTest, readAndWriteFileTest){
 	mc::DataIO readData(fileDirPass + "csvFileTest.csv");
 
 	// 読み込んだ値が正しいかチェック
-	vector< vector<string> > v = readData.toVec();
+	vector< vector<string> > v = readData.toVecRows();
 	// １行１列目は１のはず
 	EXPECT_EQ(1, toInt(v[0][0]));
 	// 3行3列目は9のはず
@@ -86,7 +86,7 @@ TEST_F(DataIOTest, readAndWriteFileTest){
 	mc::DataIO readData2(fileDirPass + "csvFileTest.csv");
 
 	// 読み込んだ値が正しいかチェック
-	v = readData2.toVec();
+	v = readData2.toVecRows();
 	// 4行１列目は10のはず
 	EXPECT_EQ(10, toInt(v[3][0]));
 	// 6行3列目は19のはず
@@ -98,7 +98,7 @@ TEST_F(DataIOTest, modValueTest){
 	mc::DataIO data(getTempMat());
 	data.modValue<int>(0, 0, 10);
 	data.modValue<int>(2, 2, 1);
-	vector< vector<string> > v = data.toVec();
+	vector< vector<string> > v = data.toVecRows();
 
 	// １行１列目は１0のはず
 	EXPECT_EQ(10, toInt(v[0][0]));
@@ -120,7 +120,7 @@ TEST_F(DataIOTest, pushBackTest){
 	content.push_back("3");
 	data.pushBack(content);
 
-	vector< vector<string> > v = data.toVec();
+	vector< vector<string> > v = data.toVecRows();
 
 	// ３回行ったpushBackの結果をチェックする
 	EXPECT_EQ("testA", v[3][0]);
@@ -164,7 +164,7 @@ TEST_F(DataIOTest, addRowTest){
 	// 最初の行への挿入がうまくできるか
 	data.addRow(0, getTempVector(19, 20, 21));
 
-	vector< vector<string> > v = data.toVec();
+	vector< vector<string> > v = data.toVecRows();
 	EXPECT_EQ(16, toInt(v[4][0]));
 	EXPECT_EQ(15, toInt(v[5][2]));
 	EXPECT_EQ(19, toInt(v[0][0]));
@@ -177,7 +177,7 @@ TEST_F(DataIOTest, clearTest){
 	data.pushBack(getTempVector(10, 11, 12));
 	data.pushBack(getTempVector(13, 14, 15));
 
-	vector< vector<string> > v = data.toVec();
+	vector< vector<string> > v = data.toVecRows();
 	EXPECT_EQ(15, toInt(v[1][2]));
 }
 
@@ -187,12 +187,12 @@ TEST_F(DataIOTest, mergeCSVTest){
 	mc::DataIO csv2(getTempMat(10));
 	mc::DataIO csv3(getTempMat(20));
 
-	vector< vector<string> > v1 = csv1.toVec();
-	vector< vector<string> > v2 = csv2.toVec();
+	vector< vector<string> > v1 = csv1.toVecRows();
+	vector< vector<string> > v2 = csv2.toVecRows();
 
 	// 横にマージする場合のテスト
-	vector< vector<string> > sideResult = mc::DataIO::mergeToSide(v1, v2, mc::DataIO::NO_SPACE);
-	vector< vector<string> > sideResultWithSpace = mc::DataIO::mergeToSide(v1, v2, mc::DataIO::WITH_SPACE);
+	vector< vector<string> > sideResult = mc::DataIO::mergeToSide(v1, v2, mc::DataIO::NoSpace);
+	vector< vector<string> > sideResultWithSpace = mc::DataIO::mergeToSide(v1, v2, mc::DataIO::WithSpace);
 
 	EXPECT_EQ(12, toInt(sideResult[0][5]));
 	EXPECT_EQ(18, toInt(sideResult[2][5]));
@@ -210,9 +210,9 @@ TEST_F(DataIOTest, mergeCSVTest){
 
 	// 複数同時にマージする場合のテスト
 	vector< vector< vector<string> > > data;
-	data.push_back(csv1.toVec());
-	data.push_back(csv2.toVec());
-	data.push_back(csv3.toVec());
+	data.push_back(csv1.toVecRows());
+	data.push_back(csv2.toVecRows());
+	data.push_back(csv3.toVecRows());
 	vector< vector<string> > bottomsResult = mc::DataIO::mergeToBottom(data);
 
 	EXPECT_EQ(1, toInt(bottomsResult[0][0]));
@@ -220,10 +220,10 @@ TEST_F(DataIOTest, mergeCSVTest){
 	EXPECT_EQ(20, toInt(bottomsResult[8][0]));
 }
 
-// 転置が正しく行われるかのテスト
-TEST_F(DataIOTest, tTest){
+// toVecColsが正しく行われるかのテスト
+TEST_F(DataIOTest, toVecColsTest){
 	mc::DataIO data(getTempMat(1, 2, 4));
-	vector< vector<string> > result = data.t().toVec();
+	vector< vector<string> > result = data.toVecCols();
 	EXPECT_EQ(2, toInt(result[1][0]));
 	EXPECT_EQ(8, toInt(result[3][1]));
 }

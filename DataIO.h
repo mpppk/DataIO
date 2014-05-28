@@ -25,6 +25,13 @@ namespace mc{
 	 * @remarks 
 	 */
 	class DataIO{
+	public:
+		enum ToVecOption{
+		    Row,
+		    Col,
+		    ToVecOptionNum
+		};
+
 	private:
 		string filePass_;
 		vector< vector<string> > contents_;
@@ -85,9 +92,19 @@ namespace mc{
 		DataIO& create(const vector< vector<string> > contents);
 
 		/**
+		 * Dataの内容を１行をvector<string>として返す
+		 */
+		vector< vector<string> > toVecRows();
+
+		/**
+		 * Dataの内容を１列をvector<string>として返す
+		 */
+		vector< vector<string> > toVecCols();
+
+		/**
 		 * Dataの内容を保持するvectorを返す
 		 */
-		vector< vector<string> > toVec();
+		vector< vector<string> > toVec(const ToVecOption option);
 
 		/**
 		 * Dataの内容を表示する
@@ -195,7 +212,6 @@ namespace mc{
 		static vector< vector<string> > mergeToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo = WITH_SPACE);
 
 		static vector< vector<string> > t(const vector< vector<string> > contents);
-		DataIO& t();
 	};
 
 
