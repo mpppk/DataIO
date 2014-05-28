@@ -81,7 +81,7 @@ TEST_F(DataIOTest, readAndWriteFileTest){
 
 	// 追加書き込み
 	mc::DataIO writeData2(getTempMat(10));
-	writeData2.writeFile(fileDirPass + "csvFileTest.csv", mc::DataIO::app);
+	writeData2.writeFile(fileDirPass + "csvFileTest.csv", mc::DataIO::App);
 	// 読み込み
 	mc::DataIO readData2(fileDirPass + "csvFileTest.csv");
 
@@ -200,8 +200,8 @@ TEST_F(DataIOTest, mergeCSVTest){
 	EXPECT_EQ(18, toInt(sideResultWithSpace[2][6]));
 
 	// 縦にマージする場合のテスト
-	vector< vector<string> > bottomResult = mc::DataIO::mergeToBottom(v1, v2, mc::DataIO::NO_SPACE);
-	vector< vector<string> > bottomResultWithSpace = mc::DataIO::mergeToBottom(v1, v2, mc::DataIO::WITH_SPACE);
+	vector< vector<string> > bottomResult = mc::DataIO::mergeToBottom(v1, v2, mc::DataIO::NoSpace);
+	vector< vector<string> > bottomResultWithSpace = mc::DataIO::mergeToBottom(v1, v2, mc::DataIO::WithSpace);
 
 	EXPECT_EQ(10, toInt(bottomResult[3][0]));
 	EXPECT_EQ(18, toInt(bottomResult[5][2]));

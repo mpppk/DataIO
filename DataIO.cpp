@@ -74,8 +74,8 @@ namespace mc{
 	// Dataの内容を指定したパスに書き込む
 	void DataIO::writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo){
 		ofstream ofs;
-		if(wo == app){
-			ofs.open(writeFilePass.c_str(), ios::app);
+		if(wo == App){
+			ofs.open(writeFilePass.c_str(), App);
 		}
 		else{
 			ofs.open(writeFilePass.c_str());
@@ -238,7 +238,7 @@ namespace mc{
 
 	// ---- static ----
 	// Dataを横にマージする
-	vector< vector<string> > DataIO::mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
+	vector< vector<string> > DataIO::mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo){
 		vector< vector< string > > newContents;
 		
 		// contents1の行ごとに処理を行う
@@ -252,7 +252,7 @@ namespace mc{
 				contents1Row = contents1.at(contents1Row_i);
 				contents2Row = contents2.at(contents1Row_i);
 
-				if(mo == WITH_SPACE)
+				if(mo == WithSpace)
 					contents1Row.push_back("");
 
 				// ２つめのDataを繋げていく
@@ -284,10 +284,10 @@ namespace mc{
 	}
 
 	// ---- static ----
-	vector< vector<string> > DataIO::mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
+	vector< vector<string> > DataIO::mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo){
 		vector< vector<string> > newContents = contents1;
 		// 間にスペースを入れる
-		if (mo == WITH_SPACE){
+		if (mo == WithSpace){
 			vector<string> v;
 			v.push_back("");
 			newContents.push_back(v);
@@ -300,7 +300,7 @@ namespace mc{
 	}
 
 	// ---- static ----
-	vector< vector<string> > DataIO::mergeToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo){
+	vector< vector<string> > DataIO::mergeToBottom(const vector< vector< vector<string> > > contents, const MergeOption mo){
 		// マージするコンテンツが0の場合はエラー
 		if(contents.size() < 1){
 			throw invalid_argument("(in Data::IO::mergeToBottom) contents num is zero");

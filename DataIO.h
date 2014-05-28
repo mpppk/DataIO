@@ -48,19 +48,19 @@ namespace mc{
 		/** @enum WriteOption 書き込み時のオプション*/
 		enum WriteOption{
 			/** 書きだし先のファイルを上書き(既存ファイルは失われる)*/
-			out,
+			Out,
 			/** 書きだし先のファイルの末尾に追加*/
-			app,
+			App,
 			/** WriteOptionの最大値*/
 			WriteOptionNum
 		};
 
 		/** Dataをマージする際のオプション */
-		enum mergeOption {
+		enum MergeOption {
 			/** マージする二つのDataの間にスペースを入れる */
-			WITH_SPACE,
+			WithSpace,
 			/** マージする二つのDataの間にスペースを入れない */
-			NO_SPACE
+			NoSpace
 		};
 
 		DataIO();
@@ -122,7 +122,7 @@ namespace mc{
 		 * @param writeFilePass 書き込み先のパス
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		DataIO& writeFile(const string writeFilePass, WriteOption wo = out);
+		DataIO& writeFile(const string writeFilePass, WriteOption wo = Out);
 
 		/**
 		 * Dataの内容を指定したパスに書き込む
@@ -130,7 +130,7 @@ namespace mc{
 		 * @param contents 		書き込む内容
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		static void writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo = out);
+		static void writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo = Out);
 
 
 		template<class T>
@@ -201,15 +201,15 @@ namespace mc{
 		 * @param contents1 Dataの内容
 		 * @param contents2 右側に追加するDataの内容
 		 */
-		static vector< vector<string> > mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo = WITH_SPACE);
+		static vector< vector<string> > mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo = WithSpace);
 		/**
 		 * 下にDataをマージする
 		 * @param contents1 Dataの内容
 		 * @param contents2 下に追加するDataの内容
 		 */
-		static vector< vector<string> > mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo = WITH_SPACE);
+		static vector< vector<string> > mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo = WithSpace);
 
-		static vector< vector<string> > mergeToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo = WITH_SPACE);
+		static vector< vector<string> > mergeToBottom(const vector< vector< vector<string> > > contents, const MergeOption mo = WithSpace);
 
 		static vector< vector<string> > t(const vector< vector<string> > contents);
 	};
