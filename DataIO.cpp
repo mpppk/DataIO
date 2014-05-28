@@ -69,7 +69,8 @@ namespace mc{
 		writeFile(writeFilePass, contents_, wo);
 		return *this;
 	}
-	
+
+	// ---- static ----
 	// Dataの内容を指定したパスに書き込む
 	void DataIO::writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo){
 		ofstream ofs;
@@ -111,6 +112,7 @@ namespace mc{
 		return *this;
 	}
 
+	// ---- static ----
 	void DataIO::show(vector< vector<string> > contents){
 		vector<string> row;
 		for(int i = 0; i < contents.size(); i++){
@@ -188,6 +190,7 @@ namespace mc{
 		return *this;
 	}
 
+	// ---- static ----
 	// valの値で列を追加
 	vector< vector<string> > DataIO::pushBackCol(const vector< vector<string> > contents, const string val){
 		vector< vector<string> > retContents = contents;
@@ -197,6 +200,7 @@ namespace mc{
 		return retContents;
 	}
 
+	// ---- static ----
 	// valの値で列を追加
 	vector< vector<string> > DataIO::pushBackCol(const vector< vector<string> > contents, const double val){
 		return pushBackCol(contents, boost::lexical_cast<string>(val));
@@ -220,6 +224,7 @@ namespace mc{
 		return *this;
 	}
 
+	// ---- static ----
 	// Dataを横にマージする
 	vector< vector<string> > DataIO::mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
 		vector< vector< string > > newContents;
@@ -266,6 +271,7 @@ namespace mc{
 		return newContents;
 	}
 
+	// ---- static ----
 	vector< vector<string> > DataIO::mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, mergeOption mo){
 		vector< vector<string> > newContents = contents1;
 		// 間にスペースを入れる
@@ -281,6 +287,7 @@ namespace mc{
 		return newContents;
 	}
 
+	// ---- static ----
 	vector< vector<string> > DataIO::mergeToBottom(const vector< vector< vector<string> > > contents, const mergeOption mo){
 		// マージするコンテンツが0の場合はエラー
 		if(contents.size() < 1){
@@ -300,6 +307,7 @@ namespace mc{
 		return retContents;
 	}
 
+	// ---- static ----
 	// 転置する
 	// すべての行が同じ数の要素を持っている前提
 	vector< vector<string> > DataIO::t(const vector< vector<string> > contents){
