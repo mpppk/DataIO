@@ -20,7 +20,7 @@ namespace mc{
 
 	//コンストラクタ
 	DataIO::DataIO(string inputFilePass){
-		DataIO::readFile(inputFilePass);
+		DataIO::readCsvFile(inputFilePass);
 	}
 
 	string DataIO::operator()(const int row, const int col) const{
@@ -34,7 +34,7 @@ namespace mc{
 	}
 
 	// 指定したパスのDataファイルを読み込む
-	DataIO& DataIO::readFile(const string inputFilePass){
+	DataIO& DataIO::readFile(const string inputFilePass, const string splitWord){
 		cout << "reading Data file (from " << inputFilePass << ")" << endl;
 		filePass_ = inputFilePass;
 		ifstream ifs(filePass_.c_str());
@@ -55,7 +55,7 @@ namespace mc{
 			lineText.erase(remove(lineText.begin(), lineText.end(), '\n'), lineText.end());
 			
 			//カンマごとに要素をvectorに格納
-			boost::algorithm::split(row, lineText, boost::is_any_of(","));
+			boost::algorithm::split(row, lineText, boost::is_any_of(splitWord));
 
 			//contentsにこの行をpush
 			contents_.push_back(row);
@@ -63,15 +63,23 @@ namespace mc{
 		return *this;
 	}
 
+	DataIO& DataIO::readCsvFile(const string readFilePass){
+		return readFile(readFilePass, ",");
+	}
+
 	// Dataの内容を指定したパスに書き込む
-	const DataIO& DataIO::writeFile(const string writeFilePass, const WriteOption wo) const{
-		writeFile(writeFilePass, contents_, wo);
+	const DataIO& DataIO::writeFile(const string writeFilePass, const string splitWord, const WriteOption wo) const{
+		writeFile(writeFilePass, splitWord, contents_, wo);
 		return *this;
+	}
+
+	const DataIO& DataIO::writeCsvFile(const string writeFilePass, const WriteOption wo) const{
+		return writeFile(writeFilePass, ",", wo);
 	}
 
 	// ---- static ----
 	// Dataの内容を指定したパスに書き込む
-	void DataIO::writeFile(const string writeFilePass, const vector< vector<string> > contents, const WriteOption wo){
+	void DataIO::writeFile(const string writeFilePass, const string splitWord, const vector< vector<string> > contents, const WriteOption wo){
 		ofstream ofs;
 		if(wo == App)	ofs.open(writeFilePass.c_str(), App);
 		else			ofs.open(writeFilePass.c_str());

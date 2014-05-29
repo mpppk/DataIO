@@ -115,14 +115,16 @@ namespace mc{
 		 * 指定したパスのDataファイルを読み込む
 		 * @param readFilePass 読み込むDataファイルのパス
 		 */
-		DataIO& readFile(const string readFilePass);
+		DataIO& readFile(const string readFilePass, const string splitWord);
+		DataIO& readCsvFile(const string readFilePass);
 
 		/**
 		 * Dataの内容を指定したパスに書き込む
 		 * @param writeFilePass 書き込み先のパス
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		const DataIO& writeFile(const string writeFilePass, const WriteOption wo = Out) const;
+		const DataIO& writeFile(const string writeFilePass, const string splitWord, const WriteOption wo = Out) const;
+		const DataIO& writeCsvFile(const string writeFilePass, const WriteOption wo = Out) const;
 
 		/**
 		 * Dataの内容を指定したパスに書き込む
@@ -130,7 +132,7 @@ namespace mc{
 		 * @param contents 		書き込む内容
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		static void writeFile(const string writeFilePass, const vector< vector<string> > contents, const WriteOption wo = Out);
+		static void writeFile(const string writeFilePass, const string splitWord, const vector< vector<string> > contents, const WriteOption wo = Out);
 
 
 		template<class T>

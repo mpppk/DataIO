@@ -64,11 +64,11 @@ TEST_F(DataIOTest, toVecTest){
 TEST_F(DataIOTest, readAndWriteFileTest){
 	// readFileに不正なパスを与えた時に例外を吐くかのテスト
 	mc::DataIO dataForChkException;
-	ASSERT_THROW(dataForChkException.readFile("noExistFile"), runtime_error);
+	ASSERT_THROW(dataForChkException.readCsvFile("noExistFile"), runtime_error);
 
 	mc::DataIO writeData1(getTempMat());
 	// 書き込む
-	writeData1.writeFile(fileDirPass + "csvFileTest.csv");
+	writeData1.writeCsvFile(fileDirPass + "csvFileTest.csv");
 	// 読み込む
 	mc::DataIO readData(fileDirPass + "csvFileTest.csv");
 
@@ -81,7 +81,7 @@ TEST_F(DataIOTest, readAndWriteFileTest){
 
 	// 追加書き込み
 	mc::DataIO writeData2(getTempMat(10));
-	writeData2.writeFile(fileDirPass + "csvFileTest.csv", mc::DataIO::App);
+	writeData2.writeCsvFile(fileDirPass + "csvFileTest.csv", mc::DataIO::App);
 	// 読み込み
 	mc::DataIO readData2(fileDirPass + "csvFileTest.csv");
 
@@ -139,7 +139,6 @@ TEST_F(DataIOTest, pushBackTest){
 	
 	EXPECT_EQ("testD", data(0, 0));
 	EXPECT_EQ("testE", data(1, 0));
-
 }
 
 // pushBackColが正しく列を追加しているかのテスト
