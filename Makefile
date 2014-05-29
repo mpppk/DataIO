@@ -5,7 +5,8 @@ SRCS  = DataIO.cpp
 OBJS = $(SRCS:%.cpp=%.o)
 DEPS = $(SRCS:%.cpp=%.d)
 
-LINK_FLAGS = 
+# FLAGS = -Wc++11-extensions
+FLAGS = -std=c++11
 
 # boostへのパス
 # 環境に合わせて変更してください
@@ -26,17 +27,17 @@ TEST_PROGRAM = $(TEST_DIR)/testDataIO.test
 
 all:            object
 
-object:;	$(CXX) -c $(LINK_FLAGS) $(SRC)
+object:;	$(CXX) -c $(FLAGS) $(SRC)
 
 clean:;         rm -f *.o *~ test/*.o test/*.test
 
 .cpp.o:
-	$(CXX) -c -MMD $(LINK_FLAGS) $< 
+	$(CXX) -c -MMD $(FLAGS) $< 
 
 $(TEST_OBJS):	$(TEST_SRCS)
 	$(CXX) -c -o $@ $^ $(GTEST_INCPASS)
 
 test:		$(TEST_OBJS) $(OBJS)
-	$(CXX) $(LINK_FLAGS) $(TEST_OBJS) $(OBJS) -o $(TEST_PROGRAM) $(GTEST_LIBPASS) $(GTEST_LIBS)
+	$(CXX) $(FLAGS) $(TEST_OBJS) $(OBJS) -o $(TEST_PROGRAM) $(GTEST_LIBPASS) $(GTEST_LIBS)
 
 -include $(DEPS)

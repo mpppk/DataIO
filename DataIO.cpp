@@ -73,31 +73,23 @@ namespace mc{
 	// Dataの内容を指定したパスに書き込む
 	void DataIO::writeFile(const string writeFilePass, const vector< vector<string> > contents, const WriteOption wo){
 		ofstream ofs;
-		if(wo == App){
-			ofs.open(writeFilePass.c_str(), App);
-		}
-		else{
-			ofs.open(writeFilePass.c_str());
-		}
+		if(wo == App)	ofs.open(writeFilePass.c_str(), App);
+		else			ofs.open(writeFilePass.c_str());
 
-		vector<string> row;
-		for (int i = 0; i < contents.size(); i++){
-			row = contents[i];
-
+		for (auto content : contents){
 			//列数がゼロの行を含む場合は警告
-			if(row.size() <= 0){
-				cerr << "warning: this Data file contains zero element row\n";
+			if(content.size() <= 0){
+				cerr << "warning: this Data file contains zero element content\n";
 				continue;
 			}
 
 			//カンマの数を合わせるために、最初の要素はループの外で書き込む
-			ofs << row[0];
-			for(int j =1; j < row.size(); j++){
-				ofs << "," << row[j];
+			ofs << content[0];
+			for(int j =1; j < content.size(); j++){
+				ofs << "," << content[j];
 			}
 			ofs << endl;
 		}
-		// delete(ofs);
 	}
 
 	//　Dataの内容を１行をvector<string>として返す
@@ -112,7 +104,7 @@ namespace mc{
 
 	//　Dataの内容を保持するvectorを返す
 	vector< vector<string> > DataIO::toVec(const ToVecOption option) const{
-		if(option == Row)	return toVecRows();
+		if(option == Row)		return toVecRows();
 		else if(option == Col)	return toVecCols();
 		throw invalid_argument("in DataIO::toVec");
 	}
@@ -126,10 +118,9 @@ namespace mc{
 	// ---- static ----
 	void DataIO::show(const vector< vector<string> > contents){
 		vector<string> row;
-		for(int i = 0; i < contents.size(); i++){
-			row = contents[i];
-			for(int j = 0; j < row.size(); j++){
-				cout << row[j] << " ";
+		for(auto content : contents){
+			for(int j = 0; j < content.size(); j++){
+				cout << content[j] << " ";
 			}
 			cout << endl;
 		}
@@ -137,7 +128,7 @@ namespace mc{
 
 	// 指定した場所に行を挿入
 	DataIO& DataIO::addRow(const unsigned int row, const vector<string> rowContents){
-		vector< vector<string> > ::iterator it = contents_.begin();
+		auto it = contents_.begin();
 
 		// 不正な行が指定された場合は例外を投げる	
 		// if(contents_.end() < it){
@@ -205,9 +196,7 @@ namespace mc{
 	// valの値で列を追加
 	vector< vector<string> > DataIO::pushBackCol(const vector< vector<string> > contents, const string val){
 		vector< vector<string> > retContents = contents;
-		for (int i = 0; i < retContents.size(); ++i){
-			retContents[i].push_back(val);
-		}
+		for (int i = 0; i < retContents.size(); ++i)	retContents[i].push_back(val);
 		return retContents;
 	}
 
@@ -287,23 +276,17 @@ namespace mc{
 		vector< vector<string> > newContents = contents1;
 		// 間にスペースを入れる
 		if (mo == WithSpace){
-			vector<string> v;
-			v.push_back("");
+			vector<string> v{""};
 			newContents.push_back(v);
 		}
-		for (int contents2Row_i = 0; contents2Row_i < contents2.size(); ++contents2Row_i){
-			// cout << "dbg:mergeToBottom contents2 row: " << contents2Row_i << endl;
-			newContents.push_back(contents2.at(contents2Row_i));
-		}
+		for (int i = 0; i < contents2.size(); ++i)	newContents.push_back(contents2.at(i));
 		return newContents;
 	}
 
 	// ---- static ----
 	vector< vector<string> > DataIO::mergeToBottom(const vector< vector< vector<string> > > contents, const MergeOption mo){
 		// マージするコンテンツが0の場合はエラー
-		if(contents.size() < 1){
-			throw invalid_argument("(in Data::IO::mergeToBottom) contents num is zero");
-		}
+		if(contents.size() < 1)	throw invalid_argument("(in Data::IO::mergeToBottom) contents num is zero");
 		// マージするコンテンツが1の場合はwarningを出してそのまま返す
 		if(contents.size() == 1){
 			cerr << "(in DataIO::mergeToBottom) contents num is only one" << endl;
