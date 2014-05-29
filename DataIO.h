@@ -83,7 +83,7 @@ namespace mc{
 		 * @param  col 列
 		 * @return 要素の値
 		 */
-		string& operator()(const int row, const int col);
+		string operator()(const int row, const int col) const;
 
 		/**
 		 * 受け取った文字列集合を保持する
@@ -94,23 +94,23 @@ namespace mc{
 		/**
 		 * Dataの内容を１行をvector<string>として返す
 		 */
-		vector< vector<string> > toVecRows();
+		vector< vector<string> > toVecRows() const;
 
 		/**
 		 * Dataの内容を１列をvector<string>として返す
 		 */
-		vector< vector<string> > toVecCols();
+		vector< vector<string> > toVecCols() const;
 
 		/**
 		 * Dataの内容を保持するvectorを返す
 		 */
-		vector< vector<string> > toVec(const ToVecOption option);
+		vector< vector<string> > toVec(const ToVecOption option) const;
 
 		/**
 		 * Dataの内容を表示する
 		 */
-		DataIO& show();
-		static void show(vector< vector<string> > contents);
+		const DataIO& show() const;
+		static void show(const vector< vector<string> > contents);
 		/**
 		 * 指定したパスのDataファイルを読み込む
 		 * @param readFilePass 読み込むDataファイルのパス
@@ -122,7 +122,7 @@ namespace mc{
 		 * @param writeFilePass 書き込み先のパス
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		DataIO& writeFile(const string writeFilePass, WriteOption wo = Out);
+		const DataIO& writeFile(const string writeFilePass, const WriteOption wo = Out) const;
 
 		/**
 		 * Dataの内容を指定したパスに書き込む
@@ -130,7 +130,7 @@ namespace mc{
 		 * @param contents 		書き込む内容
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
-		static void writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo = Out);
+		static void writeFile(const string writeFilePass, const vector< vector<string> > contents, const WriteOption wo = Out);
 
 
 		template<class T>
@@ -201,13 +201,13 @@ namespace mc{
 		 * @param contents1 Dataの内容
 		 * @param contents2 右側に追加するDataの内容
 		 */
-		static vector< vector<string> > mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo = WithSpace);
+		static vector< vector<string> > mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, const MergeOption mo = WithSpace);
 		/**
 		 * 下にDataをマージする
 		 * @param contents1 Dataの内容
 		 * @param contents2 下に追加するDataの内容
 		 */
-		static vector< vector<string> > mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo = WithSpace);
+		static vector< vector<string> > mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, const MergeOption mo = WithSpace);
 
 		static vector< vector<string> > mergeToBottom(const vector< vector< vector<string> > > contents, const MergeOption mo = WithSpace);
 

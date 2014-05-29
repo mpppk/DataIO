@@ -23,19 +23,18 @@ namespace mc{
 		DataIO::readFile(inputFilePass);
 	}
 
-	string& DataIO::operator()(const int row, const int col){
-		// contents_は直接触らない
+	string DataIO::operator()(const int row, const int col) const{
 		return contents_[row][col];
 	}
 
 	// vector< vector<string> >から読み込み
-	DataIO& DataIO::create(vector< vector<string> > contents){
+	DataIO& DataIO::create(const vector< vector<string> > contents){
 		contents_ = contents;
 		return *this;
 	}
 
 	// 指定したパスのDataファイルを読み込む
-	DataIO& DataIO::readFile(string inputFilePass){
+	DataIO& DataIO::readFile(const string inputFilePass){
 		cout << "reading Data file (from " << inputFilePass << ")" << endl;
 		filePass_ = inputFilePass;
 		ifstream ifs(filePass_.c_str());
@@ -65,14 +64,14 @@ namespace mc{
 	}
 
 	// Dataの内容を指定したパスに書き込む
-	DataIO& DataIO::writeFile(string writeFilePass, WriteOption wo){
+	const DataIO& DataIO::writeFile(const string writeFilePass, const WriteOption wo) const{
 		writeFile(writeFilePass, contents_, wo);
 		return *this;
 	}
 
 	// ---- static ----
 	// Dataの内容を指定したパスに書き込む
-	void DataIO::writeFile(string writeFilePass, vector< vector<string> > contents, WriteOption wo){
+	void DataIO::writeFile(const string writeFilePass, const vector< vector<string> > contents, const WriteOption wo){
 		ofstream ofs;
 		if(wo == App){
 			ofs.open(writeFilePass.c_str(), App);
@@ -102,30 +101,30 @@ namespace mc{
 	}
 
 	//　Dataの内容を１行をvector<string>として返す
-	vector< vector<string> > DataIO::toVecRows(){
+	vector< vector<string> > DataIO::toVecRows() const{
 		return contents_;
 	}
 
 	//　Dataの内容を1列をvector<string>として返す
-	vector< vector<string> > DataIO::toVecCols(){
+	vector< vector<string> > DataIO::toVecCols() const{
 		return t(contents_);
 	}
 
 	//　Dataの内容を保持するvectorを返す
-	vector< vector<string> > DataIO::toVec(const ToVecOption option){
+	vector< vector<string> > DataIO::toVec(const ToVecOption option) const{
 		if(option == Row)	return toVecRows();
 		else if(option == Col)	return toVecCols();
 		throw invalid_argument("in DataIO::toVec");
 	}
 
 	// Dataの内容を表示する
-	DataIO& DataIO::show(){
+	const DataIO& DataIO::show() const{
 		show(contents_);
 		return *this;
 	}
 
 	// ---- static ----
-	void DataIO::show(vector< vector<string> > contents){
+	void DataIO::show(const vector< vector<string> > contents){
 		vector<string> row;
 		for(int i = 0; i < contents.size(); i++){
 			row = contents[i];
@@ -238,7 +237,7 @@ namespace mc{
 
 	// ---- static ----
 	// Dataを横にマージする
-	vector< vector<string> > DataIO::mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo){
+	vector< vector<string> > DataIO::mergeToSide(const vector< vector<string> > contents1, const vector< vector<string> > contents2, const MergeOption mo){
 		vector< vector< string > > newContents;
 		
 		// contents1の行ごとに処理を行う
@@ -284,7 +283,7 @@ namespace mc{
 	}
 
 	// ---- static ----
-	vector< vector<string> > DataIO::mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, MergeOption mo){
+	vector< vector<string> > DataIO::mergeToBottom(const vector< vector<string> > contents1, const vector< vector<string> > contents2, const MergeOption mo){
 		vector< vector<string> > newContents = contents1;
 		// 間にスペースを入れる
 		if (mo == WithSpace){
