@@ -12,12 +12,6 @@ FLAGS = -std=c++11
 # 環境に合わせて変更してください
 BOOST_INCPASS = -I/opt/local/include
 
-# picojsonへのパス
-# サブモジュールを利用しない場合は変更して下さい
-PICOJSON_INCPASS = -I./picojson
-
-INCPASS = $(BOOST_INCPASS) $(PICOJSON_INCPASS)
-
 # ---- テスト用の設定 ----
 
 # google test関連
@@ -31,15 +25,17 @@ TEST_SRCS = $(TEST_DIR)/testDataIO.cpp
 TEST_OBJS    = $(TEST_SRCS:%.cpp=%.o)
 TEST_PROGRAM = $(TEST_DIR)/testDataIO.test
 
-all:            test
+all:            object
+
+object:;	$(CXX) -c $(FLAGS) $(SRC)
 
 clean:;         rm -f *.o *~ test/*.o test/*.test
 
 .cpp.o:
-	$(CXX) -c -MMD $(FLAGS) $< $(INCPASS)
+	$(CXX) -c -MMD $(FLAGS) $< 
 
 $(TEST_OBJS):	$(TEST_SRCS)
-	$(CXX) -c -o $@ $^ $(INCPASS) $(GTEST_INCPASS)
+	$(CXX) -c -o $@ $^ $(GTEST_INCPASS)
 
 test:		$(TEST_OBJS) $(OBJS)
 	$(CXX) $(FLAGS) $(TEST_OBJS) $(OBJS) -o $(TEST_PROGRAM) $(GTEST_LIBPASS) $(GTEST_LIBS)

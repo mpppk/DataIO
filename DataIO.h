@@ -17,9 +17,6 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/lexical_cast.hpp>
 
-// picojson
-#include <picojson.h>
-
 using namespace std;
 
 namespace mc{
