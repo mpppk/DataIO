@@ -25,9 +25,7 @@ TEST_SRCS = $(TEST_DIR)/testDataIO.cpp
 TEST_OBJS    = $(TEST_SRCS:%.cpp=%.o)
 TEST_PROGRAM = $(TEST_DIR)/testDataIO.test
 
-all:            object
-
-object:;	$(CXX) -c $(FLAGS) $(SRC)
+all:            $(OBJS)
 
 clean:;         rm -f *.o *~ test/*.o test/*.test
 
