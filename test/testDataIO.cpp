@@ -227,6 +227,13 @@ TEST_F(DataIOTest, toVecColsTest){
 	EXPECT_EQ(8, toInt(result[3][1]));
 }
 
+// mkdirが正しく行われるかのテスト
+// TEST_F(DataIOTest, makeDirTest){
+// 	mc::DataIO::makeDir("testDir");
+// 	string dirName = mc::DataIO::makeDir("testDir");
+// 	cout << dirName << endl;
+// }
+
 int main( int argc, char* argv[] ){
     ::testing::InitGoogleTest( &argc, argv );
     return RUN_ALL_TESTS();

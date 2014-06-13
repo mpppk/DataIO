@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <sys/stat.h> // mkdir
 
 //boostのライブラリ
 #include <boost/algorithm/string.hpp>
@@ -214,6 +215,8 @@ namespace mc{
 		static vector< vector<string> > mergeToBottom(const vector< vector< vector<string> > > contents, const MergeOption mo = WithSpace);
 
 		static vector< vector<string> > t(const vector< vector<string> > contents);
+
+		static string makeDir(string dirPass);
 	};
 
 

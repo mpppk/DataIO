@@ -324,5 +324,36 @@ namespace mc{
 		}
 		return retContents;
 	}
+
+	string DataIO::makeDir(string dirPass){
+		int cnt = 0;
+		string retOutputDirPass;
+		while(1){
+			ostringstream os;
+			os << dirPass << "(" << cnt << ")";
+			struct stat sb;
+			if (stat(os.str().c_str(), &sb) == -1){
+				cout << os.str() << endl;
+				if (mkdir(os.str().c_str(),
+					S_IRUSR | S_IWUSR | S_IXUSR |         /* rwx */
+					S_IRGRP | S_IWGRP | S_IXGRP |         /* rwx */
+					S_IROTH | S_IXOTH | S_IXOTH) == 0){
+					cout << "dir " << os.str() << " is made." << endl;
+					retOutputDirPass = os.str();
+					break;
+				}else{
+					cout << "mkdir error!!" << endl;
+					exit(1);
+				}
+			}
+			else{
+				// cout << "dir already exist" << endl;
+				cnt++;
+			}
+		}
+		return retOutputDirPass;
+	}
+
+
 }
 
