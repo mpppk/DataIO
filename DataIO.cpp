@@ -330,7 +330,8 @@ namespace mc{
 		string retOutputDirPass;
 		while(1){
 			ostringstream os;
-			os << dirPass << "(" << cnt << ")";
+			if(cnt == 0)	os << dirPass;
+			else	os << dirPass << "(" << cnt << ")";
 			struct stat sb;
 			if (stat(os.str().c_str(), &sb) == -1){
 				cout << os.str() << endl;
