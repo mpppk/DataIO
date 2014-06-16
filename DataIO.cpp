@@ -334,7 +334,7 @@ namespace mc{
 			else	os << dirPass << "(" << cnt << ")";
 			struct stat sb;
 			if (stat(os.str().c_str(), &sb) == -1){
-				cout << os.str() << endl;
+				// cout << os.str() << endl;
 				if (mkdir(os.str().c_str(),
 					S_IRUSR | S_IWUSR | S_IXUSR |         /* rwx */
 					S_IRGRP | S_IWGRP | S_IXGRP |         /* rwx */
