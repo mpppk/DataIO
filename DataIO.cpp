@@ -339,7 +339,7 @@ namespace mc{
 					S_IRUSR | S_IWUSR | S_IXUSR |         /* rwx */
 					S_IRGRP | S_IWGRP | S_IXGRP |         /* rwx */
 					S_IROTH | S_IXOTH | S_IXOTH) == 0){
-					cout << "dir " << os.str() << " is made." << endl;
+					// cout << "dir " << os.str() << " is made." << endl;
 					retOutputDirPass = os.str();
 					break;
 				}else{
