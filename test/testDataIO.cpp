@@ -91,6 +91,13 @@ TEST_F(DataIOTest, readAndWriteFileTest){
 	EXPECT_EQ(10, toInt(v[3][0]));
 	// 6行3列目は19のはず
 	EXPECT_EQ(18, toInt(v[5][2]));
+
+	vector<string> logVec = {"log1", "log2", "log3"};
+	mc::DataIO::writeColFile(fileDirPass + "csvFileTest2.csv", ",", logVec, mc::DataIO::App);
+	mc::DataIO logData(fileDirPass + "csvFileTest2.csv");
+	v = logData.toVecRows();
+	EXPECT_EQ("log3", v[2][0]);
+
 }
 
 // modValueがただしく値を変更しているかのテスト

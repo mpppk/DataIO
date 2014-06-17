@@ -33,7 +33,7 @@ clean:;         rm -f *.o *~ test/*.o test/*.test *.d
 	$(CXX) -c -MMD $(FLAGS) $< 
 
 $(TEST_OBJS):	$(TEST_SRCS)
-	$(CXX) -c -o $@ $^ $(GTEST_INCPASS)
+	$(CXX) $(FLAGS) -c -o $@ $^ $(GTEST_INCPASS)
 
 test:		$(TEST_OBJS) $(OBJS)
 	$(CXX) $(FLAGS) $(TEST_OBJS) $(OBJS) -o $(TEST_PROGRAM) $(GTEST_LIBPASS) $(GTEST_LIBS)

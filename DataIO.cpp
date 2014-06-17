@@ -100,6 +100,13 @@ namespace mc{
 		}
 	}
 
+	// ---- static ----
+	void DataIO::writeColFile(const string writeFilePass, const string splitWord, const vector<string> contents, const WriteOption wo){
+		vector< vector<string> > tempVec;
+		for(int i = 0; i < contents.size(); i++){tempVec.push_back(vector<string>{contents[i]}); }
+		writeFile(writeFilePass, splitWord, tempVec, wo);
+	}
+
 	//　Dataの内容を１行をvector<string>として返す
 	vector< vector<string> > DataIO::toVecRows() const{
 		return contents_;

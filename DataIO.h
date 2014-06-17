@@ -134,6 +134,7 @@ namespace mc{
 		 * @param wo            書き込む際のオプション.詳細はWriteOptionを参照
 		 */
 		static void writeFile(const string writeFilePass, const string splitWord, const vector< vector<string> > contents, const WriteOption wo = Out);
+		static void writeColFile(const string writeFilePass, const string splitWord, const vector<string> contents, const WriteOption wo = Out);
 
 
 		template<class T>
