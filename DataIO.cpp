@@ -5,7 +5,7 @@
  */
 
 // ユーザー定義
-#include "DataIO.h"
+#include <DataIO.h>
 
 using namespace std;
 

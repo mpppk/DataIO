@@ -1,6 +1,6 @@
 # DataIOのためのMakefile
 CXX  = g++
-SRCS  = DataIO.cpp
+SRCS  = DataIO.cpp Log.cpp
 # OBJS = DataIO.o
 OBJS = $(SRCS:%.cpp=%.o)
 DEPS = $(SRCS:%.cpp=%.d)
@@ -10,8 +10,8 @@ FLAGS = -std=c++11
 
 # boostへのパス
 # 環境に合わせて変更してください
-BOOST_INCPASS = -I/opt/local/include
-
+# BOOST_INCPASS = -I/opt/local/include
+INCPASS = -I./
 # ---- テスト用の設定 ----
 
 # google test関連
@@ -30,10 +30,10 @@ all:            $(OBJS)
 clean:;         rm -f *.o *~ test/*.o test/*.test *.d
 
 .cpp.o:
-	$(CXX) -c -MMD $(FLAGS) $< 
+	$(CXX) -c -MMD $(FLAGS) $< $(INCPASS)
 
 $(TEST_OBJS):	$(TEST_SRCS)
-	$(CXX) $(FLAGS) -c -o $@ $^ $(GTEST_INCPASS)
+	$(CXX) $(FLAGS) -c -o $@ $^ $(GTEST_INCPASS) $(INCPASS)
 
 test:		$(TEST_OBJS) $(OBJS)
 	$(CXX) $(FLAGS) $(TEST_OBJS) $(OBJS) -o $(TEST_PROGRAM) $(GTEST_LIBPASS) $(GTEST_LIBS)
