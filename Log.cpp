@@ -19,7 +19,7 @@ namespace mc{
 		int hour = now->tm_hour;
 		int min = now->tm_min; int sec = now->tm_sec;
 		string dateLog = "date," + toString(year) + "_" + toString(month) + "_" + toString(day);
-		string timeLog = "time," + toString(day) + ":" + toString(hour) + ":" + toString(min);
+		string timeLog = "time," + toString(hour) + ":" + toString(min) + ":" + toString(sec);
 		add(dateLog);
 		add(timeLog);
 		return *this;
