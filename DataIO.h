@@ -196,6 +196,12 @@ namespace mc{
 		DataIO& pushBackCol(const double val);
 
 		/**
+		 * 指定した行/列を切り出す。その部分はデータから削除される
+		 */
+		vector<string> cutUpRow(const int row);
+		vector<string> cutUpCol(const int col);
+
+		/**
 		 * 保持しているコンテンツを消す
 		 */
 		DataIO& clear();

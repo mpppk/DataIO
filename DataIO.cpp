@@ -233,6 +233,20 @@ namespace mc{
 		return *this;
 	}
 
+	vector<string> DataIO::cutUpRow(const int row){
+		vector<string> retVec = contents_[row];
+		contents_.erase(contents_.begin() + row);
+		return retVec;
+	}
+
+	vector<string> DataIO::cutUpCol(const int col){
+		auto tc = t(contents_);
+		vector<string> retVec = tc[col];
+		tc.erase(tc.begin() + col);
+		contents_ = t(tc);
+		return retVec;
+	}
+
 	// 保持しているコンテンツを消す
 	DataIO& DataIO::clear(){
 		contents_.clear();

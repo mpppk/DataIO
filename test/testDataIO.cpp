@@ -235,6 +235,14 @@ TEST_F(DataIOTest, toVecColsTest){
 	EXPECT_EQ(8, toInt(result[3][1]));
 }
 
+TEST_F(DataIOTest, cutUpTest){
+	mc::DataIO data(getTempMat());
+	data.cutUpCol(1);
+	data.cutUpRow(1);
+	EXPECT_EQ(3, toInt(data(0, 1)));
+	EXPECT_EQ(9, toInt(data(1, 1)));
+}
+
 // mkdirが正しく行われるかのテスト
 // TEST_F(DataIOTest, makeDirTest){
 // 	mc::DataIO::makeDir("testDir");
