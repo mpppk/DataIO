@@ -247,6 +247,20 @@ namespace mc{
 		return retVec;
 	}
 
+	DataIO& DataIO::setHeaderRow(const int row){
+		headerRow_ = cutUpRow(row);
+		return *this;
+	}
+
+	DataIO& DataIO::setHeaderCol(const int col){
+		headerCol_ = cutUpCol(col);
+		return *this;
+	}
+
+	string DataIO::getHeaderRow(const int row){return headerRow_[row]; }
+
+	string DataIO::getHeaderCol(const int col){return headerCol_[col]; }
+
 	// 保持しているコンテンツを消す
 	DataIO& DataIO::clear(){
 		contents_.clear();

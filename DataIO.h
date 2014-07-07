@@ -36,7 +36,8 @@ namespace mc{
 	private:
 		string filePass_;
 		vector< vector<string> > contents_;
-
+		vector<string> headerRow_;
+		vector<string> headerCol_;
 		// // 改行などの文字コードを取り除くための条件(詳しくは関数オブジェクト、叙述関数などでググる)
 		// // remove_ifが上手く使えなかったので、使っていない
 		// struct removeChar {
@@ -200,6 +201,15 @@ namespace mc{
 		 */
 		vector<string> cutUpRow(const int row);
 		vector<string> cutUpCol(const int col);
+
+		/**
+		 * 指定した行/列をヘッダに指定する。データとしての管理はしなくなる
+		 */
+		DataIO& setHeaderRow(const int row = 0);
+		DataIO& setHeaderCol(const int col = 0);
+
+		string getHeaderRow(const int index);
+		string getHeaderCol(const int index);
 
 		/**
 		 * 保持しているコンテンツを消す
