@@ -253,6 +253,20 @@ TEST_F(DataIOTest, headerTest){
 	EXPECT_EQ(data.getHeaderCol(0), "4");
 }
 
+TEST_F(DataIOTest, copyFileTest){
+	// コピー先のファイルを適当な値に変更しておく
+	mc::DataIO data(getTempMat(100));
+	data.writeCsvFile(fileDirPass + "dstCopyFileTest.csv");
+
+	mc::DataIO writeData1(getTempMat());
+	// 書き込む
+	writeData1.writeCsvFile(fileDirPass + "copyFileTest.csv");
+	mc::DataIO::copyFile(fileDirPass + "copyFileTest.csv", fileDirPass + "dstCopyFileTest.csv");
+	mc::DataIO readData(fileDirPass + "dstCopyFileTest.csv");
+	EXPECT_EQ(readData(0, 0), "1");
+	EXPECT_EQ(readData(2, 2), "9");
+}
+
 // mkdirが正しく行われるかのテスト
 // TEST_F(DataIOTest, makeDirTest){
 // 	mc::DataIO::makeDir("testDir");

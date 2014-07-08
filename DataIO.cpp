@@ -360,6 +360,7 @@ namespace mc{
 		return retContents;
 	}
 
+	// ---- static ----
 	string DataIO::makeDir(string dirPass){
 		int cnt = 0;
 		string retOutputDirPass;
@@ -390,6 +391,37 @@ namespace mc{
 		return retOutputDirPass;
 	}
 
+	// ---- static ----
+	// ファイルをコピーする
+	bool DataIO::copyFile(string srcPass, string dstPass){
+		// コピー元をオープンする
+		std::ifstream ifs(srcPass);
+		if (!ifs) {
+			std::cerr << "source file open error: " << srcPass << '\n';
+			return false;
+		}
+		// コピー先をオープンする
+		std::ofstream ofs(dstPass);
+		if (!ofs) {
+			std::cerr << "distination file open error: " << dstPass << '\n';
+			return false;
+		}
+
+		// コピー
+		ofs << ifs.rdbuf() << std::flush;
+
+		// エラーチェック
+		if (!ifs) {
+			std::cerr << "source file I/O error: " << srcPass << '\n';
+			return false;
+		}
+		if (!ofs) {
+			std::cerr << "distination file I/O error: " << dstPass << '\n';
+			return false;
+		}
+
+		return true;
+	}
 
 }
 

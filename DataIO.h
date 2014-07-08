@@ -234,6 +234,8 @@ namespace mc{
 		static vector< vector<string> > t(const vector< vector<string> > contents);
 
 		static string makeDir(string dirPass);
+
+		static bool copyFile(string srcPass, string dstPass);
 	};
 
 
