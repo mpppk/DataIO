@@ -367,7 +367,7 @@ namespace mc{
 		while(1){
 			ostringstream os;
 			if(cnt == 0)	os << dirPass;
-			else	os << dirPass << "(" << cnt << ")";
+			else	os << dirPass << "_" << cnt;
 			struct stat sb;
 			if (stat(os.str().c_str(), &sb) == -1){
 				// cout << os.str() << endl;
